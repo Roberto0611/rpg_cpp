@@ -1,4 +1,8 @@
 {
+            "code-runner.executorMap": {
+                "cpp": "bash -lc 'if [ \"$fileName\" = \"main.cpp\" ]; then mkdir -p build && g++ -std=c++20 -Iinclude src/*.cpp main.cpp -O2 -Wall -o build/rpg && ./build/rpg; else g++ -std=c++20 -Iinclude \"$fullFileName\" -o \"$fileNameWithoutExt\" && \"./$fileNameWithoutExt\"; fi'"
+            },
+        "code-runner.runInTerminal": true,
     "files.associations": {
         "*.embeddedhtml": "html",
         "string": "cpp"
