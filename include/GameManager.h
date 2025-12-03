@@ -13,14 +13,19 @@ using namespace std;
 class GameManager{
     private:
     Player player;
+    vector<Monster> enemies;
+    int round; // numero de ronda, util para el algoritmo de azar
 
     public:
     // constructor
     GameManager(const Player& player);
 
     // metodos
+    void execute();
     void initGame();
-
+    void loadEnemies();
+    int getRound();
+    Monster selectEnemie();
 };
 
 #endif // GameManager_h

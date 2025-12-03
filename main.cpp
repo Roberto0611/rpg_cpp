@@ -50,9 +50,8 @@ int main() {
     );
 
     // cout << player.getName() << endl;
-
     GameManager game(player);
-    game.initGame();
+    game.execute();
 
     cout << "a";
 

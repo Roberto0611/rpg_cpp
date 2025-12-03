@@ -46,3 +46,5 @@ class Utils{
     public:
     vector<Monster> reader(const string& file);
 };
+
+// class Random para randomizar el enemigo seleccionado 

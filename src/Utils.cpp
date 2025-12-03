@@ -50,8 +50,7 @@ vector<Monster> Utils::reader(const string& file){
         stats.defense = stoi(temp);
 
         getline(stream, temp); // fecha
-        FechaRegistro fecha;
-        // Parsear fecha de ser necesario
+        FechaRegistro fecha = parseFecha(temp);
 
         Monster monster(id, nombre, elemento, stats, fecha);
         monsters.push_back(monster);
