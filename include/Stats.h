@@ -5,3 +5,29 @@
 // enum class TipoItem
 // Struct FechaRegistro
 // Struct Stats (Variables: hpActual, hpMax, ataque, defensa, velocidad.)
+
+#pragma once
+#include <chrono>
+
+// enums
+enum class Elemento{
+    fuego,
+    Agua,
+    Planta,
+    Tierra,
+    Neutro
+};
+
+enum class TipoItem{
+    Curacion,
+    BuffAtaque,
+    BuffDefensa
+};
+
+// struct
+struct stats{
+    int HPCurrent;
+    int HPMax;
+    int attack;
+    int defense;
+};
