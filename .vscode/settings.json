@@ -47,6 +47,7 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
+        "format": "cpp",
         "fstream": "cpp",
         "initializer_list": "cpp",
         "iomanip": "cpp",
@@ -68,7 +69,6 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "expected": "cpp",
-        "format": "cpp",
         "queue": "cpp",
         "ranges": "cpp",
         "text_encoding": "cpp"

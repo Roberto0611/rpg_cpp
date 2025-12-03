@@ -8,9 +8,10 @@
 
 #include <chrono>
 
+
 // enums
 enum class Element{
-    fuego,
+    Fuego,
     Agua,
     Planta,
     Tierra,
@@ -33,4 +34,6 @@ struct Stats{
     int HPMax;
     int attack;
     int defense;
+    int id;
+    std::string name, tipo, date, elemento, fecha;
 };
