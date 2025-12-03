@@ -5,7 +5,7 @@
 // enum class TipoItem
 // Struct FechaRegistro
 // Struct Stats (Variables: hpActual, hpMax, ataque, defensa, velocidad.)
-
+#pragma once
 #include <chrono>
 
 

@@ -3,6 +3,7 @@
 #define Monster_h
 
 #include <string>
+#include <iostream>
 #include "Stats.h"
 
 using namespace std;
@@ -22,7 +23,12 @@ class Monster{
         void takeDamage(int damage);
         bool isAlive();
         int getAttack();
+        int getDefense();
+        void setHP(int netDamage);
         int getHP();
+        string getName();
+        
+        // sobrecarga
+        friend ostream& operator << (ostream &o, const Monster &m);
 };
-
 #endif // Monster_h
