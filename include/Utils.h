@@ -1,0 +1,1 @@
+// Funciones herramientas (Split, Random, Validaciones)
