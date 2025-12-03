@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "Monster.h"
+#include "Player.h"
 #include "Utils.h"
 
 int main() {
@@ -33,6 +34,21 @@ int main() {
     cout << charmeleon.getHP() << endl;
 
     cout << charmeleon << endl;
+
+    std::cout << "--- PRUEBA: CLASE Player ---\n";
+    Stats playerStats = {
+        .HPCurrent = 0,    
+        .HPMax = 100,      
+        .attack = 64,     
+        .defense = 58,
+    };
+
+    Player player(
+        "Roberto",
+        playerStats
+    );
+
+    cout << player.getName() << endl;
 
     return 0;
 }

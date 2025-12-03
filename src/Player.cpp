@@ -1,15 +1,16 @@
 #include "../include/Player.h"
+#include "Stats.h"
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 // Constructor
-Player::Player(int hpMax, int attack, int defense)
+Player::Player(string name, Stats stats)
 {
-    stats.HPMax = hpMax;
-    stats.HPCurrent = hpMax;
-    stats.attack = attack;
-    stats.defense = defense;
+    this->name = name;
+    this->stats = stats;
+    this->stats.HPCurrent = this->stats.HPMax;
     defending = false;
 }
 
@@ -24,19 +25,30 @@ void Player::defend()
     defending = true;
 }
 
-void Player::takeDamage(int danioEntrante)
-{
-    if (defending)
-    {
-        danioEntrante /= 2;
-        defending = false;
+string Player::getName(){
+    return this->name;
+}
+
+int Player::getDefense(){
+    return this->stats.defense;
+}
+
+int Player::getHP(){
+    return this->stats.HPCurrent;
+}
+
+void Player::setHP(int netDamage){
+    if(netDamage > getHP()){
+        netDamage = getHP();
     }
 
-    stats.HPCurrent -= danioEntrante;
-    if (stats.HPCurrent < 0)
-    {
-        stats.HPCurrent = 0;
-    }
+    this->stats.HPCurrent -= netDamage;
+}
+
+void Player::takeDamage(int damage)
+{
+    int netDamage = max(1, damage - getDefense()/2);
+    setHP(netDamage);
 }
 
 // Getters

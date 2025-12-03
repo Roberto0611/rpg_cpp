@@ -9,18 +9,23 @@ using namespace std;
 class Player
 {
 private:
+    string name;
     Stats stats;
     vector<Item> inventory;
     bool defending;
 
 public:
     // Constructor
-    Player(int hpMax, int attack, int defense);
+    Player(string name,Stats stats);
 
     // Métodos
     int attack();
+    int getDefense();
+    int getHP();
+    void setHP(int netDamage);
     void defend();
-    void takeDamage(int danioEntrante);
+    void takeDamage(int damage);
+    string getName();
     // void usarItem(int indice);
 
     // Getters
