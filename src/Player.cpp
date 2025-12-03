@@ -10,26 +10,26 @@ Player::Player(int hpMax, int attack, int defense)
     stats.HPCurrent = hpMax;
     stats.attack = attack;
     stats.defense = defense;
-    defendiendo = false;
+    defending = false;
 }
 
 
-int Player::atacar()
+int Player::attack()
 {
     return stats.attack;
 }
 
-void Player::defender()
+void Player::defend()
 {
-    defendiendo = true;
+    defending = true;
 }
 
-void Player::recibirDanio(int danioEntrante)
+void Player::takeDamage(int danioEntrante)
 {
-    if (defendiendo)
+    if (defending)
     {
         danioEntrante /= 2;
-        defendiendo = false;
+        defending = false;
     }
 
     stats.HPCurrent -= danioEntrante;
@@ -45,12 +45,12 @@ Stats Player::getStats() const
     return stats;
 }
 
-bool Player::isDefendiendo() const
+bool Player::isDefending() const
 {
-    return defendiendo;
+    return defending;
 }
 
-const vector<Item> &Player::getInventario() const
+const vector<Item> &Player::getInventory() const
 {
-    return inventario;
+    return inventory;
 }

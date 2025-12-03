@@ -10,21 +10,21 @@ class Player
 {
 private:
     Stats stats;
-    vector<Item> inventario;
-    bool defendiendo;
+    vector<Item> inventory;
+    bool defending;
 
 public:
     // Constructor
     Player(int hpMax, int attack, int defense);
 
     // Métodos
-    int atacar();
-    void defender();
-    void recibirDanio(int danioEntrante);
+    int attack();
+    void defend();
+    void takeDamage(int danioEntrante);
     // void usarItem(int indice);
 
     // Getters
     Stats getStats() const;
-    bool isDefendiendo() const;
-    const vector<Item> &getInventario() const;
+    bool isDefending() const;
+    const vector<Item> &getInventory() const;
 };
