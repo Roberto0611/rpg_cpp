@@ -2,10 +2,12 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include "Monster.h"
 using namespace std;
 
 class Utils{
     public:
-    void reader(const string& file);
+    vector<Monster> reader(const string& file);
 
 };
