@@ -40,6 +40,22 @@ void GameManager::execute()
             break;
         }
 
+        // El jugador ganó, curación entre rondas (25% del HP máximo)
+        int currentHP = player.getHP();
+        int maxHP = player.getStats().HPMax;
+        int healAmount = maxHP * 0.25;
+        
+        if (currentHP < maxHP)
+        {
+            player.heal(healAmount);
+            int newHP = player.getHP();
+            int actualHeal = newHP - currentHP;
+            
+            std::cout << "\n💚 " << player.getName() << " se recupera +" << actualHeal << " HP\n";
+            std::cout << "HP: " << currentHP << " → " << newHP << " / " << maxHP << "\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+
         // El jugador ganó, continuar a la siguiente ronda
         std::cout << "\nPresiona ENTER para continuar a la siguiente ronda...";
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -75,9 +91,9 @@ void GameManager::createPlayer(){
 
     Stats playerStats = {
         .HPCurrent = 0,
-        .HPMax = 100,
-        .attack = 20,
-        .defense = 15,
+        .HPMax = 150,
+        .attack = 35,
+        .defense = 25,
     };
 
     this->player = Player(Pname, playerStats);
@@ -218,12 +234,22 @@ bool GameManager::combat(Monster &enemy)
         std::cout << "======================================================\n";
         std::cout << player.getName() << " HP: " << player.getHP() << "/" << player.getStats().HPMax;
         std::cout << " | " << enemy.getName() << " HP: " << enemy.getHP() << "\n";
-        std::cout << "======================================================\n";
+        
+        // Mostrar si hay contraataque listo
+        if (player.isCounterAttackReady())
+        {
+            std::cout << " [⚡ CONTRAATAQUE LISTO - Daño +50%]";
+        }
+        std::cout << "\n======================================================\n";
 
         // Menú de opciones
         std::cout << "\n Que deseas hacer\n";
-        std::cout << "1. Atacar\n";
-        std::cout << "2. Defender\n";
+        std::cout << "1. Atacar";
+        if (player.isCounterAttackReady())
+        {
+            std::cout << " (⚡ +50% daño)";
+        }
+        std::cout << "\n2. Defender (próximo ataque +50%)\n";
         std::cout << "Opcion: ";
 
         int opcion;
@@ -235,17 +261,42 @@ bool GameManager::combat(Monster &enemy)
         if (opcion == 1)
         {
             playerDamage = player.attack();
+            
+            // Aplicar bonus de contraataque si está listo
+            if (player.isCounterAttackReady())
+            {
+                playerDamage = playerDamage * 1.5;
+                std::cout << "\n⚡ CONTRAATAQUE! ";
+                player.resetCounterAttack();
+            }
+            
+            // Sistema de críticos (20% de probabilidad)
+            int critChance = rand() % 100;
+            bool isCritical = critChance < 20;
+            
+            if (isCritical)
+            {
+                playerDamage = playerDamage * 2;
+                std::cout << "\n💥 ¡GOLPE CRÍTICO! ";
+            }
+            
             int damageDealt = max(1, playerDamage - enemy.getDefense() / 2);
             enemy.setHP(damageDealt);
-            std::cout << "\n"
-                      << player.getName() << " ataca y causa " << damageDealt << " de dano \n";
+            std::cout << player.getName() << " ataca y causa " << damageDealt << " de dano";
+            
+            if (isCritical)
+            {
+                std::cout << " (x2)";
+            }
+            std::cout << "\n";
+            
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         else if (opcion == 2)
         {
             player.defend();
-            std::cout << "\n"
-                      << player.getName() << " se defiende \n";
+            std::cout << "\n🛡️  "
+                      << player.getName() << " se defiende y prepara un contraataque!\n";
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
@@ -284,6 +335,9 @@ bool GameManager::combat(Monster &enemy)
 
         std::cout << "HP actual de " << player.getName() << ": " << player.getHP() << "/" << player.getStats().HPMax << "\n\n";
         std::this_thread::sleep_for(std::chrono::seconds(1));
+        
+        // Resetear estado de defensa para el próximo turno
+        player.resetDefending();
 
         // Verificar si el jugador sigue vivo
         if (player.getHP() <= 0)

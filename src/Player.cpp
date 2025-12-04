@@ -12,6 +12,7 @@ Player::Player(string name, Stats stats)
     this->stats = stats;
     this->stats.HPCurrent = this->stats.HPMax;
     defending = false;
+    counterAttackReady = false;
 }
 
 
@@ -23,6 +24,17 @@ int Player::attack()
 void Player::defend()
 {
     defending = true;
+    counterAttackReady = true;
+}
+
+void Player::resetCounterAttack()
+{
+    counterAttackReady = false;
+}
+
+void Player::resetDefending()
+{
+    defending = false;
 }
 
 string Player::getName(){
@@ -45,6 +57,13 @@ void Player::setHP(int netDamage){
     this->stats.HPCurrent -= netDamage;
 }
 
+void Player::heal(int amount){
+    this->stats.HPCurrent += amount;
+    if(this->stats.HPCurrent > this->stats.HPMax){
+        this->stats.HPCurrent = this->stats.HPMax;
+    }
+}
+
 void Player::takeDamage(int damage)
 {
     int netDamage = max(1, damage - getDefense()/2);
@@ -60,6 +79,11 @@ Stats Player::getStats() const
 bool Player::isDefending() const
 {
     return defending;
+}
+
+bool Player::isCounterAttackReady() const
+{
+    return counterAttackReady;
 }
 
 const vector<Item> &Player::getInventory() const

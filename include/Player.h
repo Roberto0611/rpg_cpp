@@ -13,6 +13,7 @@ private:
     Stats stats;
     vector<Item> inventory;
     bool defending;
+    bool counterAttackReady; 
 
 public:
     // Constructor
@@ -24,13 +25,17 @@ public:
     int getDefense();
     int getHP();
     void setHP(int netDamage);
+    void heal(int amount);
     void defend();
     void takeDamage(int damage);
     string getName();
+    void resetCounterAttack();
+    void resetDefending();
     // void usarItem(int indice);
 
     // Getters
     Stats getStats() const;
     bool isDefending() const;
+    bool isCounterAttackReady() const;
     const vector<Item> &getInventory() const;
 };
