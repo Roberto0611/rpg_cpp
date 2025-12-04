@@ -10,15 +10,16 @@
 
 using namespace std;
 
-class GameManager{
-    private:
+class GameManager
+{
+private:
     Player player;
     vector<Monster> enemies;
     int round; // numero de ronda, util para el algoritmo de azar
 
-    public:
+public:
     // constructor
-    GameManager(const Player& player);
+    GameManager(const Player &player);
 
     // metodos
     void execute();
@@ -26,6 +27,7 @@ class GameManager{
     void loadEnemies();
     int getRound();
     Monster selectEnemie();
+    bool combat(Monster &enemy);
 };
 
 #endif // GameManager_h

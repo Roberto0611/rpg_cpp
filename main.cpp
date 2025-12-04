@@ -8,24 +8,25 @@ using namespace std;
 #include "Utils.h"
 #include "GameManager.h"
 
-int main() {
+int main()
+{
 
     // std::cout << "--- PRUEBA: CLASE MONSTER ---\n";
     // Stats charmeleonStats = {
-    //     .HPCurrent = 0,    
-    //     .HPMax = 58,      
-    //     .attack = 64,     
-    //     .defense = 58,    
+    //     .HPCurrent = 0,
+    //     .HPMax = 58,
+    //     .attack = 64,
+    //     .defense = 58,
     // };
 
     // FechaRegistro fecha = parseFecha("2025-03-12");
 
     // Monster charmeleon(
     //     5,
-    //     "Charmeleon",  
+    //     "Charmeleon",
     //     Element::Fuego,
-    //     charmeleonStats,            
-    //     fecha                       
+    //     charmeleonStats,
+    //     fecha
     // );
 
     // cout << charmeleon.getName() << endl;
@@ -36,20 +37,19 @@ int main() {
 
     // cout << charmeleon << endl;
 
-     std::cout << "--- PRUEBA: CLASE Player ---\n";
-     Stats playerStats = {
-         .HPCurrent = 0,    
-         .HPMax = 100,      
-         .attack = 64,     
-         .defense = 58,
-     };
+    std::cout << "--- PRUEBA: CLASE Player ---\n";
+    Stats playerStats = {
+        .HPCurrent = 0,
+        .HPMax = 100,
+        .attack = 64,
+        .defense = 58,
+    };
 
-     Player player(
-         "Roberto",
-         playerStats
-    );
+    Player player(
+        "Roberto",
+        playerStats);
 
-    // cout << player.getName() << endl;
+    //cout << player.getName() << endl;
     GameManager game(player);
     game.execute();
 
