@@ -64,6 +64,19 @@ void Player::heal(int amount){
     }
 }
 
+void Player::increaseMaxHP(int amount){
+    this->stats.HPMax += amount;
+    this->stats.HPCurrent += amount; 
+}
+
+void Player::increaseAttack(int amount){
+    this->stats.attack += amount;
+}
+
+void Player::increaseDefense(int amount){
+    this->stats.defense += amount;
+}
+
 void Player::takeDamage(int damage)
 {
     int netDamage = max(1, damage - getDefense()/2);

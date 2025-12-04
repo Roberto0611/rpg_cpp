@@ -56,6 +56,8 @@ void GameManager::execute()
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
+        showRewards();
+
         // El jugador ganó, continuar a la siguiente ronda
         std::cout << "\nPresiona ENTER para continuar a la siguiente ronda...";
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -91,9 +93,9 @@ void GameManager::createPlayer(){
 
     Stats playerStats = {
         .HPCurrent = 0,
-        .HPMax = 150,
-        .attack = 35,
-        .defense = 25,
+        .HPMax = 100,
+        .attack = 45,
+        .defense = 35,
     };
 
     this->player = Player(Pname, playerStats);
@@ -354,4 +356,62 @@ bool GameManager::combat(Monster &enemy)
 
     // Si llegamos aquí, el jugador ganó
     return true;
+}
+
+// Sistema de recompensas después de ganar combate
+void GameManager::showRewards()
+{
+    std::cout << "\n======================================================\n";
+    std::cout << "           🎁 ¡RECOMPENSA POR VICTORIA! 🎁\n";
+    std::cout << "======================================================\n";
+    std::cout << "Elige una mejora permanente:\n\n";
+    std::cout << "1. 💚 Vida Máxima +15 HP (y te cura 15 HP)\n";
+    std::cout << "2. ⚔️  Ataque +3\n";
+    std::cout << "3. 🛡️  Defensa +3\n";
+    std::cout << "4. ✨ Curación Completa (restaura todo el HP)\n";
+    std::cout << "\nOpción: ";
+
+    int choice;
+    std::cin >> choice;
+
+    Stats currentStats = player.getStats();
+
+    switch(choice)
+    {
+        case 1:
+            player.increaseMaxHP(15);
+            std::cout << "\n💚 ¡HP Máximo aumentado!\n";
+            std::cout << "HP Máximo: " << currentStats.HPMax << " → " << player.getStats().HPMax << "\n";
+            std::cout << "HP Actual: " << player.getHP() << " / " << player.getStats().HPMax << "\n";
+            break;
+        
+        case 2:
+            player.increaseAttack(3);
+            std::cout << "\n⚔️  ¡Ataque aumentado!\n";
+            std::cout << "Ataque: " << currentStats.attack << " → " << player.getStats().attack << "\n";
+            break;
+        
+        case 3:
+            player.increaseDefense(3);
+            std::cout << "\n🛡️  ¡Defensa aumentada!\n";
+            std::cout << "Defensa: " << currentStats.defense << " → " << player.getStats().defense << "\n";
+            break;
+        
+        case 4:
+            {
+                int currentHP = player.getHP();
+                int maxHP = player.getStats().HPMax;
+                player.heal(maxHP);
+                std::cout << "\n✨ ¡Curación completa!\n";
+                std::cout << "HP: " << currentHP << " → " << player.getHP() << " / " << maxHP << "\n";
+            }
+            break;
+        
+        default:
+            std::cout << "\n❌ Opción inválida. No se otorgó recompensa.\n";
+            break;
+    }
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "======================================================\n";
 }

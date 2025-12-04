@@ -31,6 +31,9 @@ public:
     string getName();
     void resetCounterAttack();
     void resetDefending();
+    void increaseMaxHP(int amount);
+    void increaseAttack(int amount);
+    void increaseDefense(int amount);
     // void usarItem(int indice);
 
     // Getters

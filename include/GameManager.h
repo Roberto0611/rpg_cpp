@@ -29,6 +29,7 @@ public:
     Monster selectEnemie();
     bool combat(Monster &enemy);
     void createPlayer();
+    void showRewards();
 };
 
 #endif // GameManager_h
