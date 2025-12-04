@@ -100,20 +100,46 @@ void GameManager::initGame()
 // algoritmo de seleccion de enemigo
 Monster GameManager::selectEnemie()
 {
-    // int actualRound = getRound();
+    int actualRound = getRound();
     int power;
-    vector<Monster> enemiesPool;
+    vector<Monster> pool1;
+    vector<Monster> pool2;
+    vector<Monster> pool3;
 
     if (enemies.empty())
     {
         throw runtime_error("No hay enemigos disponibles");
     }
 
-    for (Monster actualEenemie : enemies)
+    // usar referencia para evitar copias masivas
+    for (const Monster& actualEenemie : enemies)
     {
         // hacer el calculo de poder para dividir el pool
         power = actualEenemie.getHP() + actualEenemie.getAttack() + actualEenemie.getDefense();
-        cout << power << endl;
+
+        // dividir en 3 niveles
+        if (power <= 150)
+        {
+            pool1.push_back(actualEenemie);
+        }
+        else if(power <= 250)
+        {
+            pool2.push_back(actualEenemie);
+        }
+        else
+        {
+            pool3.push_back(actualEenemie);
+        }
+    }
+    
+    // TODO: seleccionar el enemigo según la ronda
+    // Por ahora retornar el primero del pool1
+    if (!pool1.empty()) {
+        return pool1[0];
+    } else if (!pool2.empty()) {
+        return pool2[0];
+    } else {
+        return pool3[0];
     }
 
     std::cout << "\n======================================================\n";

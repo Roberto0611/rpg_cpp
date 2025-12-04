@@ -21,12 +21,12 @@ class Monster{
 
         // metodos
         void takeDamage(int damage);
-        bool isAlive();
-        int getAttack();
-        int getDefense();
+        bool isAlive() const;
+        int getAttack() const;
+        int getDefense() const;
         void setHP(int netDamage);
-        int getHP();
-        string getName();
+        int getHP() const;
+        std::string getName() const;
         
         // sobrecarga
         friend ostream& operator << (ostream &o, const Monster &m);

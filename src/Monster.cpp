@@ -29,15 +29,15 @@ Monster::Monster(int id, string name, Element element, Stats stats, FechaRegistr
 }
 
 // getters y setters
-int Monster::getAttack(){
+int Monster::getAttack() const {
     return this->stats.attack;
 }
 
-int Monster::getDefense(){
+int Monster::getDefense() const {
     return this->stats.defense;
 }
 
-int Monster::getHP(){
+int Monster::getHP() const {
     return this->stats.HPCurrent;
 }
 
@@ -49,7 +49,7 @@ void Monster::setHP(int netDamage){
     this->stats.HPCurrent -= netDamage;
 }
 
-string Monster::getName(){
+string Monster::getName() const {
     return this->name;
 }
 
@@ -61,7 +61,7 @@ void Monster::takeDamage(int damage){
     setHP(netDamage);
 }
 
-bool Monster::isAlive(){
+bool Monster::isAlive() const {
     return getHP() > 0;
 }
 
