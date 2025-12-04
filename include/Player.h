@@ -16,6 +16,7 @@ private:
 
 public:
     // Constructor
+    Player() = default;
     Player(string name,Stats stats);
 
     // Métodos

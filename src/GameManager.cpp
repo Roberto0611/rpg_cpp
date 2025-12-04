@@ -1,10 +1,15 @@
 #include <string>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <limits>
+#include <thread>
+#include <chrono>
 #include "GameManager.h"
+#include "Player.h"
 
 // constructor
-GameManager::GameManager(const Player &player) : player(player)
+GameManager::GameManager()
 {
     // player ya está inicializado mediante la lista de inicialización
     this->round = 0;
@@ -61,6 +66,23 @@ void GameManager::loadEnemies()
     }
 }
 
+// crear jugador
+void GameManager::createPlayer(){
+    std::string Pname;
+    cout << "Para comenzar ingresa tu nombre: ";
+    cin >> Pname;
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpiar buffer después de leer nombre
+
+    Stats playerStats = {
+        .HPCurrent = 0,
+        .HPMax = 100,
+        .attack = 20,
+        .defense = 15,
+    };
+
+    this->player = Player(Pname, playerStats);
+}
+
 int GameManager::getRound()
 {
     return this->round;
@@ -85,6 +107,8 @@ void GameManager::initGame()
     std::cout << "Presiona ENTER para continuar...";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+    createPlayer();
+
     std::cout << "\n======================================================\n";
     std::cout << "JUGADOR: " << player.getName() << "\n";
     std::cout << "======================================================\n";
@@ -105,6 +129,8 @@ Monster GameManager::selectEnemie()
     vector<Monster> pool1;
     vector<Monster> pool2;
     vector<Monster> pool3;
+
+    srand(time(NULL));
 
     if (enemies.empty())
     {
@@ -132,31 +158,59 @@ Monster GameManager::selectEnemie()
         }
     }
     
-    // TODO: seleccionar el enemigo según la ronda
-    // Por ahora retornar el primero del pool1
-    if (!pool1.empty()) {
-        return pool1[0];
-    } else if (!pool2.empty()) {
-        return pool2[0];
-    } else {
-        return pool3[0];
+    //seleccionar el enemigo según la ronda
+    // Inicializar con el primer enemigo disponible
+    Monster selected = !pool1.empty() ? pool1[0] : (!pool2.empty() ? pool2[0] : pool3[0]);
+    
+    if (actualRound >= 1 && actualRound <= 3)
+    {
+        // Rondas iniciales: pool de enemigos débiles
+        if (pool1.empty()) {
+            selected = pool2.empty() ? pool3[0] : pool2[0];
+        } else {
+            int num = rand() % pool1.size();
+            selected = pool1[num];
+        }
     }
-
+    else if (actualRound >= 4 && actualRound <= 7)
+    {
+        // Rondas medias: pool de enemigos medianos
+        if (pool2.empty()) {
+            selected = pool1.empty() ? pool3[0] : pool1[0];
+        } else {
+            int num = rand() % pool2.size();
+            selected = pool2[num];
+        }
+    }
+    else
+    {
+        // Rondas avanzadas: pool de enemigos fuertes
+        if (pool3.empty()) {
+            selected = pool2.empty() ? pool1[0] : pool2[0];
+        } else {
+            int num = rand() % pool3.size();
+            selected = pool3[num];
+        }
+    }
+    
     std::cout << "\n======================================================\n";
-    std::cout << "ENEMIGO SELECCIONADO: " << enemies[0].getName() << "\n";
+    std::cout << "ENEMIGO SELECCIONADO: " << selected.getName() << "\n";
     std::cout << "======================================================\n";
-    std::cout << "HP:      " << enemies[0].getHP() << "\n";
-    std::cout << "Ataque:  " << enemies[0].getAttack() << "\n";
-    std::cout << "Defensa: " << enemies[0].getDefense() << "\n";
+    std::cout << "HP:      " << selected.getHP() << "\n";
+    std::cout << "Ataque:  " << selected.getAttack() << "\n";
+    std::cout << "Defensa: " << selected.getDefense() << "\n";
     std::cout << "======================================================\n\n";
+    
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    return enemies[0];
+    return selected;
 }
 
 // sistema de combate
 bool GameManager::combat(Monster &enemy)
 {
     std::cout << "COMIENZA EL COMBATE\n\n";
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     while (player.getHP() > 0 && enemy.isAlive())
     {
@@ -185,27 +239,32 @@ bool GameManager::combat(Monster &enemy)
             enemy.setHP(damageDealt);
             std::cout << "\n"
                       << player.getName() << " ataca y causa " << damageDealt << " de dano \n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         else if (opcion == 2)
         {
             player.defend();
             std::cout << "\n"
                       << player.getName() << " se defiende \n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
         // Verificar si el enemigo sigue vivo
         if (!enemy.isAlive())
         {
             std::cout << "\n Has derrotado a " << enemy.getName() << "!\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "======================================================\n";
             std::cout << "VICTORIA\n";
             std::cout << "======================================================\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             break;
         }
 
         // Turno del enemigo
         std::cout << "\n"
                   << enemy.getName() << " ataca!\n";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         int enemyDamage = enemy.getAttack();
 
         if (player.isDefending())
@@ -213,15 +272,18 @@ bool GameManager::combat(Monster &enemy)
             int damageReceived = max(1, enemyDamage - player.getDefense());
             player.setHP(damageReceived);
             std::cout << player.getName() << " recibe " << damageReceived << " de daño (defendiendo)!\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         else
         {
             player.takeDamage(enemyDamage);
             int damageReceived = max(1, enemyDamage - player.getDefense() / 2);
             std::cout << player.getName() << " recibe " << damageReceived << " de dano!\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
         std::cout << "HP actual de " << player.getName() << ": " << player.getHP() << "/" << player.getStats().HPMax << "\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // Verificar si el jugador sigue vivo
         if (player.getHP() <= 0)
@@ -229,7 +291,9 @@ bool GameManager::combat(Monster &enemy)
             std::cout << "\n======================================================\n";
             std::cout << "DERROTA\n";
             std::cout << "======================================================\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "Has sido derrotado por " << enemy.getName() << "...\n";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             return false;
         }
     }

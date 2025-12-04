@@ -19,7 +19,7 @@ private:
 
 public:
     // constructor
-    GameManager(const Player &player);
+    GameManager();
 
     // metodos
     void execute();
@@ -28,6 +28,7 @@ public:
     int getRound();
     Monster selectEnemie();
     bool combat(Monster &enemy);
+    void createPlayer();
 };
 
 #endif // GameManager_h
