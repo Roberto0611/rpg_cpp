@@ -51,8 +51,8 @@ void GameManager::execute()
             int newHP = player.getHP();
             int actualHeal = newHP - currentHP;
             
-            std::cout << "\n💚 " << player.getName() << " se recupera +" << actualHeal << " HP\n";
-            std::cout << "HP: " << currentHP << " → " << newHP << " / " << maxHP << "\n";
+            std::cout << "\n[+] " << player.getName() << " se recupera +" << actualHeal << " HP\n";
+            std::cout << "HP: " << currentHP << " -> " << newHP << " / " << maxHP << "\n";
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
@@ -240,7 +240,7 @@ bool GameManager::combat(Monster &enemy)
         // Mostrar si hay contraataque listo
         if (player.isCounterAttackReady())
         {
-            std::cout << " [⚡ CONTRAATAQUE LISTO - Daño +50%]";
+            std::cout << " [!] CONTRAATAQUE LISTO - Dano +50%";
         }
         std::cout << "\n======================================================\n";
 
@@ -249,9 +249,9 @@ bool GameManager::combat(Monster &enemy)
         std::cout << "1. Atacar";
         if (player.isCounterAttackReady())
         {
-            std::cout << " (⚡ +50% daño)";
+            std::cout << " [!] +50% dano";
         }
-        std::cout << "\n2. Defender (próximo ataque +50%)\n";
+        std::cout << "\n2. Defender (proximo ataque +50%)\n";
         std::cout << "Opcion: ";
 
         int opcion;
@@ -268,7 +268,7 @@ bool GameManager::combat(Monster &enemy)
             if (player.isCounterAttackReady())
             {
                 playerDamage = playerDamage * 1.5;
-                std::cout << "\n⚡ CONTRAATAQUE! ";
+                std::cout << "\n[!] CONTRAATAQUE! ";
                 player.resetCounterAttack();
             }
             
@@ -279,7 +279,7 @@ bool GameManager::combat(Monster &enemy)
             if (isCritical)
             {
                 playerDamage = playerDamage * 2;
-                std::cout << "\n💥 ¡GOLPE CRÍTICO! ";
+                std::cout << "\n[***] GOLPE CRITICO! ";
             }
             
             int damageDealt = max(1, playerDamage - enemy.getDefense() / 2);
@@ -297,7 +297,7 @@ bool GameManager::combat(Monster &enemy)
         else if (opcion == 2)
         {
             player.defend();
-            std::cout << "\n🛡️  "
+            std::cout << "\n[DEFENSA] "
                       << player.getName() << " se defiende y prepara un contraataque!\n";
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
@@ -362,14 +362,14 @@ bool GameManager::combat(Monster &enemy)
 void GameManager::showRewards()
 {
     std::cout << "\n======================================================\n";
-    std::cout << "           🎁 ¡RECOMPENSA POR VICTORIA! 🎁\n";
+    std::cout << "           [RECOMPENSA POR VICTORIA!]\n";
     std::cout << "======================================================\n";
     std::cout << "Elige una mejora permanente:\n\n";
-    std::cout << "1. 💚 Vida Máxima +15 HP (y te cura 15 HP)\n";
-    std::cout << "2. ⚔️  Ataque +3\n";
-    std::cout << "3. 🛡️  Defensa +3\n";
-    std::cout << "4. ✨ Curación Completa (restaura todo el HP)\n";
-    std::cout << "\nOpción: ";
+    std::cout << "1. [+HP] Vida Maxima +15 HP (y te cura 15 HP)\n";
+    std::cout << "2. [ATK] Ataque +3\n";
+    std::cout << "3. [DEF] Defensa +3\n";
+    std::cout << "4. [HEAL] Curacion Completa (restaura todo el HP)\n";
+    std::cout << "\nOpcion: ";
 
     int choice;
     std::cin >> choice;
@@ -380,21 +380,21 @@ void GameManager::showRewards()
     {
         case 1:
             player.increaseMaxHP(15);
-            std::cout << "\n💚 ¡HP Máximo aumentado!\n";
-            std::cout << "HP Máximo: " << currentStats.HPMax << " → " << player.getStats().HPMax << "\n";
+            std::cout << "\n[+HP] HP Maximo aumentado!\n";
+            std::cout << "HP Maximo: " << currentStats.HPMax << " -> " << player.getStats().HPMax << "\n";
             std::cout << "HP Actual: " << player.getHP() << " / " << player.getStats().HPMax << "\n";
             break;
         
         case 2:
             player.increaseAttack(3);
-            std::cout << "\n⚔️  ¡Ataque aumentado!\n";
-            std::cout << "Ataque: " << currentStats.attack << " → " << player.getStats().attack << "\n";
+            std::cout << "\n[ATK] Ataque aumentado!\n";
+            std::cout << "Ataque: " << currentStats.attack << " -> " << player.getStats().attack << "\n";
             break;
         
         case 3:
             player.increaseDefense(3);
-            std::cout << "\n🛡️  ¡Defensa aumentada!\n";
-            std::cout << "Defensa: " << currentStats.defense << " → " << player.getStats().defense << "\n";
+            std::cout << "\n[DEF] Defensa aumentada!\n";
+            std::cout << "Defensa: " << currentStats.defense << " -> " << player.getStats().defense << "\n";
             break;
         
         case 4:
@@ -402,13 +402,13 @@ void GameManager::showRewards()
                 int currentHP = player.getHP();
                 int maxHP = player.getStats().HPMax;
                 player.heal(maxHP);
-                std::cout << "\n✨ ¡Curación completa!\n";
-                std::cout << "HP: " << currentHP << " → " << player.getHP() << " / " << maxHP << "\n";
+                std::cout << "\n[HEAL] Curacion completa!\n";
+                std::cout << "HP: " << currentHP << " -> " << player.getHP() << " / " << maxHP << "\n";
             }
             break;
         
         default:
-            std::cout << "\n❌ Opción inválida. No se otorgó recompensa.\n";
+            std::cout << "\n[X] Opcion invalida. No se otorgo recompensa.\n";
             break;
     }
 
